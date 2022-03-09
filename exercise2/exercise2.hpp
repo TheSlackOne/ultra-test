@@ -14,6 +14,8 @@ void find_largest_sum(uint64_t T, const std::vector<uint64_t> &I, std::vector<ui
     accum = a;
     for (int i = I.size() - 2; i > 0; --i) {
         b = I.at(i);
+        if (b == a)
+            continue;
         if (accum + b <= S) {
             M.push_back(b);
             accum += b;
