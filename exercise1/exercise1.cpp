@@ -26,7 +26,7 @@ int main() {
     // Expected file format:
     // operand1 operand2 result
     // Each line is a test.
-    std::ifstream infile("../test.txt");
+    std::ifstream infile("../exercise1/test.txt");
     while (infile >> s_op1 >> s_op2 >> s_result) {
         int64_t op1, op2, result;
         if (s_op1 == "Max")
