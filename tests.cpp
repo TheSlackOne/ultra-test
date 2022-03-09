@@ -1,6 +1,7 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE exercises
 #include <boost/test/unit_test.hpp>
+#include <stdexcept>      // std::invalid_argument
 #include "exercise1/exercise1.hpp"
 #include "exercise2/exercise2.hpp"
 
@@ -32,12 +33,13 @@ BOOST_AUTO_TEST_CASE(e1) {
             op2 = std::numeric_limits<int64_t>::min();
         else
             op2 = strtoll(s_op2.c_str(), nullptr, 10);
-        if (is_number(s_result))
+        // If s_result is a number, no overflow nor underflow is expected.
+        if (is_number(s_result)) {
             result = std::stoull(s_result);
-        try {
             BOOST_CHECK(add(op1, op2) == result);
-        } catch (const std::exception& e) {
-            std::cout << "Exception: " << e.what() << std::endl;
+        } else {
+            // add() throws std::invalid_argument on overflow and underflow.
+            BOOST_CHECK_THROW(add(op1, op2), std::invalid_argument);
         }
     }
 }
