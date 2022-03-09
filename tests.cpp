@@ -70,8 +70,11 @@ BOOST_AUTO_TEST_CASE(e2) {
         find_largest_sum(T, I, M, S);
         // Verifies solution.
         uint64_t accum = 0;
+        uint64_t last_element = 0;
         for (const auto& e : M)  {
             accum += e;
+            BOOST_CHECK(last_element < e);
+            last_element = e;
         }
         BOOST_CHECK(accum == S);
     }

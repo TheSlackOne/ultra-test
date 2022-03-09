@@ -9,19 +9,29 @@
 // T is always >= any M's element.
 void find_largest_sum(uint64_t T, const std::vector<uint64_t> &I, std::vector<uint64_t>& M, uint64_t &S) {
     uint64_t accum = 0;
-    uint64_t a = 0, b = 0;
-    a = I.back();
-    accum = a;
-    for (int i = I.size() - 2; i > 0; --i) {
-        b = I.at(i);
-        if (b == a)
-            continue;
-        if (accum + b <= S) {
-            M.push_back(b);
-            accum += b;
-        }
-        if (accum + b == S)
+    for (int i = 0; i < I.size() && accum < S; ++i) {
+        accum += I.at(i);
+        M.push_back(I.at(i));
+        for (int j = i + 1; j < I.size() && accum < S; ++j) {
+            accum += I.at(j);
+            // Saves to vector while accum < S.
+            M.push_back(I.at(j));
+            if (accum <= S) {
+                if (accum == S)
+                    return;
+                continue;
+            }
+            // accum > S, tries to find an element to remove.
+            uint64_t diff = accum - S;
+            for (int k = 0; k < M.size(); ++k) {
+                if (M.at(k) == diff) {
+                    M.erase(M.begin() + k);
+                    return;
+                }
+            }
             break;
+        }
+        accum = 0;
+        M.clear();
     }
-    M.push_back(a);
 }
